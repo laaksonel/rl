@@ -15,7 +15,10 @@
     flake-utils.lib.eachDefaultSystem (system:
     let
       pkgs = nixpkgs.legacyPackages.${system};
-      libs = [ pkgs.stdenv.cc.cc.lib pkgs.zlib ];
+      libs = [
+        pkgs.stdenv.cc.cc.lib
+        pkgs.zlib
+      ];
     in
     {
       devShells.default = pkgs.mkShell {
@@ -23,10 +26,11 @@
         LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath libs;
 
         packages = [
+          pkgs.conda
           pkgs.pipenv
           (pkgs.python312.withPackages (python-pkgs: [
             python-pkgs.pip
-            #python-pkgs.jupyterlab
+            python-pkgs.pygame
           ]))
         ];
       };
